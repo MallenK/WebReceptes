@@ -139,5 +139,20 @@
       "hervir",
       "servir"
     ]
+  },
+  {
+    "id": "prueba",
+    "title": "Prueba",
+    "image": "",
+    "category": "Sin categoría",
+    "difficulty": "Fácil",
+    "time": 0,
+    "tags": [],
+    "ingredients": [
+      "agua"
+    ],
+    "steps": [
+      "hervir"
+    ]
   }
 ]
