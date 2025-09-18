@@ -1,560 +1,107 @@
-<!doctype html>
-<html lang="ca">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Receptes | Sergi i Gina</title>
-  <meta name="description" content="Llibre de receptes en català amb cerca, filtres, favorits i conversor de racions." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recetas de Sergi y Gina</title>
+  <meta name="description" content="Recetario de Sergi y Gina. Búsqueda, filtros, favoritos y añadir recetas. 100% estática para GitHub Pages.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
-  <meta name="color-scheme" content="light dark">
-
-  <style>
-    :root{
-    --bg:#F5F2FA;
-    --bg-alt:#ffffff;
-    --text:#201B2D;
-    --muted:#6D6780;
-    --primary:#7E57C2;
-    --secondary:#B39DDB;
-    --accent:#9C27B0;
-    --ring: rgba(126,87,194,0.35);
-  
-    /* Ombres clares per tema lila */
-    --shadow: 0 2px 6px rgba(126,87,194,0.18),
-              0 8px 20px rgba(126,87,194,0.12);
-    --shadow-hover: 0 6px 24px rgba(126,87,194,0.20),
-                    0 14px 36px rgba(126,87,194,0.16);
-    --radius: 16px;
-  }
-  
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    color:var(--text);
-    background:var(--bg);
-    line-height:1.55;
-  }
-  
-  .wrap{max-width:1100px;margin-inline:auto;padding:24px}
-  
-  .site-header{
-    background:linear-gradient(135deg, var(--primary), var(--secondary));
-    color:#fff;
-    box-shadow:var(--shadow);
-  }
-  .site-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
-  .brand{font-family:"Playfair Display", serif;font-weight:700;letter-spacing:.2px;margin:0}
-  .brand-accent{opacity:.95}
-  
-  .top-actions{display:flex;gap:8px;flex-wrap:wrap}
-  a.ghost,button.ghost{
-    border:1px solid rgba(255,255,255,0.6);
-    background:transparent;color:#fff;padding:8px 12px;border-radius:999px;
-    text-decoration:none;box-shadow:none;transition:.2s transform,.2s background;
-  }
-  a.ghost:hover,button.ghost:hover{background:rgba(255,255,255,.12);transform:translateY(-1px)}
-  
-  .controls{
-    display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:12px;margin:20px 0 8px;
-  }
-  .controls input,.controls select{
-    background:var(--bg-alt);border:1px solid #e6e0f5;border-radius:12px;
-    padding:10px 12px;font-size:15px;box-shadow:var(--shadow);
-    outline:none;transition: box-shadow .2s, border-color .2s;
-  }
-  .controls input:focus,.controls select:focus{border-color:var(--primary); box-shadow:0 0 0 4px var(--ring)}
-  
-  .grid{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:18px 0 36px;
-  }
-  .card{
-    background:var(--bg-alt);border:1px solid #eee8ff;border-radius:var(--radius);overflow:hidden;
-    box-shadow:var(--shadow);transition:.25s transform, .25s box-shadow;
-  }
-  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
-  .card img{width:100%;height:180px;object-fit:cover;display:block}
-  .card .pad{padding:14px}
-  .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-  .badge{
-    font-size:12px;padding:4px 8px;border-radius:999px;background:#efe9ff;color:#5a3aa3;border:1px solid #e6dcff
-  }
-  .card h3{margin:0 0 4px 0;font-size:18px}
-  .card p{margin:4px 0 0 0;color:var(--muted);font-size:14px}
-  
-  .about{margin:40px 0 80px;background:#fff;border:1px solid #eee8ff;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
-  .about h2{margin-top:0}
-  
-  .site-footer{background:#fff;border-top:1px solid #eee8ff}
-  .site-footer small{color:var(--muted)}
-  
-  dialog#recipeModal::backdrop{background:rgba(32,27,45,0.35)}
-  dialog#recipeModal{
-    border:none;border-radius:20px;padding:0;max-width:900px;width:min(900px,96vw);
-    box-shadow:var(--shadow-hover);background:#fff
-  }
-  .modal{padding:0}
-  .modal-header{
-    display:flex;justify-content:space-between;align-items:center;padding:14px 16px 8px;border-bottom:1px solid #eee8ff
-  }
-  .modal-header h3{margin:0;font-family:"Playfair Display", serif}
-  .icon{background:transparent;border:none;font-size:20px;cursor:pointer;color:#6943b6}
-  .hero{width:100%;max-height:320px;object-fit:cover;border-bottom:1px solid #eee8ff}
-  .meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid #eee8ff}
-  .meta .small{font-size:13px}
-  .primary{
-    background:var(--primary);border:none;color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer;
-    box-shadow:var(--shadow);transition:.2s transform,.2s box-shadow
-  }
-  .primary:hover{transform:translateY(-1px);box-shadow:var(--shadow-hover)}
-  button.small{padding:6px 10px;border-radius:10px}
-  .ghost.small{border:1px solid #d7c8ff;color:#5a3aa3;background:#f6f1ff}
-  
-  .servings{display:flex;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid #eee8ff}
-  .servings input{width:80px;padding:8px;border:1px solid #e6e0f5;border-radius:10px}
-  
-  .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:16px}
-  .ingredients li{margin:6px 0}
-  .steps li{margin:8px 0}
-  .tips{margin-top:10px}
-  
-  .modal-footer{display:flex;gap:10px;justify-content:flex-end;padding:12px 16px;border-top:1px solid #eee8ff}
-  
-  @media (max-width: 720px){
-    .controls{grid-template-columns:1fr 1fr;grid-auto-rows:auto}
-    .cols{grid-template-columns:1fr}
-    .card img{height:160px}
-  }
-
-  </style>
-
-  <!-- Dades estructurades Recipe per a la portada (es generen també dinàmicament a la fitxa) -->
-  <script type="application/ld+json" id="ld-seed">
-  {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "Receptes Sergi i Gina",
-    "about": "Receptes casolanes en català",
-    "inLanguage": "ca"
-  }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="wrap">
-      <h1 class="brand">Receptes <span class="brand-accent">Sergi i Gina</span></h1>
-      <nav class="top-actions">
-        <button id="btnFavorites" class="ghost" title="Veure favorits">★ Favorits</button>
-        <a class="ghost" href="#" id="btnAll">Totes</a>
-        <a class="ghost" href="#sobre-mi">Sobre mi</a>
-      </nav>
-    </div>
-  </header>
+  <div class="container">
+    <header>
+      <div class="title">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Recetas de Sergi y Gina</h1>
+          <div class="sub">Búsqueda, filtros, favoritos y edición local.</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="exportBtn" class="btn">Exportar JSON</button>
+        <label class="btn" for="importFile">Importar JSON</label>
+        <input id="importFile" type="file" accept="application/json" hidden>
+        <button id="resetBtn" class="btn" title="Borra recetas añadidas por ti (no las de ejemplo)">Resetear añadidas</button>
+        <a class="btn primary" href="#" id="ghHint">Guía GitHub Pages</a>
+      </div>
+    </header>
 
-  <main class="wrap">
-    <section class="controls" aria-label="Cerca i filtres">
-      <input id="q" type="search" placeholder="Cerca ingredients o títols..." autocomplete="off" />
-      <select id="filterCategory" aria-label="Filtra per categoria">
-        <option value="">Totes les categories</option>
-        <option value="vegetarià">Vegetarià</option>
-        <option value="carns">Carns</option>
-        <option value="pastas">Pastes</option>
-        <option value="altres">Altres</option>
+    <section class="controls" aria-label="Controles de búsqueda y filtrado">
+      <input id="q" type="search" placeholder="Buscar por nombre o ingrediente" aria-label="Buscar">
+      <select id="cat">
+        <option value="">Todas las categorías</option>
+        <option>Pastas</option>
+        <option>Carnes</option>
+        <option>Vegetariano</option>
+        <option>Postres</option>
+        <option>Desayunos</option>
       </select>
-      <select id="filterDifficulty" aria-label="Filtra per dificultat">
-        <option value="">Qualsevol dificultat</option>
-        <option value="fàcil">Fàcil</option>
-        <option value="mitjana">Mitjana</option>
+      <select id="diff">
+        <option value="">Dificultad</option>
+        <option>Fácil</option>
+        <option>Media</option>
+        <option>Difícil</option>
       </select>
-      <select id="filterTime" aria-label="Filtra per temps">
-        <option value="">Qualsevol temps</option>
-        <option value="15">≤ 15 min</option>
-        <option value="30">≤ 30 min</option>
-        <option value="45">≤ 45 min</option>
-      </select>
+      <label class="fav-toggle pill"><input id="onlyFav" type="checkbox"> Solo favoritos</label>
     </section>
+
+    <details class="add">
+      <summary>➕ Añadir receta (se guarda en tu navegador)</summary>
+      <form id="addForm" class="form-grid" autocomplete="off">
+        <input name="title" placeholder="Título" required>
+        <input name="image" placeholder="URL de imagen (opcional)">
+        <input name="category" placeholder="Categoría" list="cats">
+        <datalist id="cats"><option>Pastas</option><option>Carnes</option><option>Vegetariano</option><option>Postres</option><option>Desayunos</option></datalist>
+        <select name="difficulty">
+          <option value="Fácil">Fácil</option>
+          <option value="Media">Media</option>
+          <option value="Difícil">Difícil</option>
+        </select>
+        <input name="time" placeholder="Minutos aprox" type="number" min="1">
+        <input name="tags" placeholder="Tags separadas por coma (ej: rápido, horno)">
+        <textarea name="ingredients" placeholder="Ingredientes, uno por línea" required></textarea>
+        <textarea name="steps" placeholder="Pasos, uno por párrafo" required></textarea>
+        <button class="btn primary" type="submit">Guardar</button>
+      </form>
+    </details>
 
     <section id="grid" class="grid" aria-live="polite"></section>
 
-    <section id="sobre-mi" class="about">
-      <h2>Sobre mi</h2>
-      <p>Projecte de receptes en català creat per Sergi i Gina. Objectiu: cuina simple, ingredients accessibles i instruccions clares.</p>
-    </section>
-  </main>
+    <footer>
+      Hecha con HTML, CSS y JS puros. Datos de usuario en <code>localStorage</code>. Copia este archivo como <code>index.html</code> y súbelo a GitHub Pages.
+    </footer>
+  </div>
 
-  <!-- Modal recepta -->
-  <dialog id="recipeModal">
-    <article class="modal">
-      <header class="modal-header">
-        <h3 id="recipeTitle"></h3>
-        <button id="closeModal" class="icon" aria-label="Tanca">✕</button>
-      </header>
-
-      <img id="recipeImg" class="hero" alt="" />
-
-      <div class="meta">
-        <span id="metaTime">⏱️</span>
-        <span id="metaDifficulty">🎯</span>
-        <span id="metaCategory">🏷️</span>
-        <button id="btnFav" class="ghost small">☆ Afegir a favorits</button>
-      </div>
-
-      <div class="servings">
-        <label for="servingsInput">Racions:</label>
-        <input id="servingsInput" type="number" min="1" step="1" />
-        <button id="btnMetric" class="ghost small" data-system="metric">Unitats: Mètriques</button>
-      </div>
-
+  <!-- Modal receta -->
+  <dialog id="recipeModal" aria-labelledby="mTitle">
+    <div class="modal-header">
+      <h3 id="mTitle" style="margin:0"></h3>
+      <button class="x" aria-label="Cerrar" onclick="modal.close()">✕</button>
+    </div>
+    <div class="modal-body">
       <div class="cols">
-        <section>
-          <h4>Ingredients</h4>
-          <ul id="ingredientsList" class="ingredients"></ul>
-        </section>
-        <section>
-          <h4>Passos</h4>
-          <ol id="stepsList" class="steps"></ol>
-          <details class="tips">
-            <summary>Trucs</summary>
-            <ul id="tipsList"></ul>
-          </details>
-        </section>
+        <div>
+          <img id="mImg" class="thumb" alt="Imagen de la receta">
+          <div class="row">
+            <span class="pill" id="mCat"></span>
+            <span class="pill" id="mDiff"></span>
+            <span class="pill" id="mTime"></span>
+          </div>
+          <div class="tags" id="mTags"></div>
+        </div>
+        <div>
+          <h4>Ingredientes</h4>
+          <ul id="mIngs" class="muted"></ul>
+          <h4>Pasos</h4>
+          <ol id="mSteps" class="muted"></ol>
+        </div>
       </div>
-
-      <footer class="modal-footer">
-        <button id="btnPrint" class="primary">Imprimeix</button>
-        <button id="shareBtn" class="ghost">Comparteix</button>
-      </footer>
-    </article>
+    </div>
   </dialog>
 
-  <footer class="site-footer">
-    <div class="wrap">
-      <small>© <span id="year"></span> Sergi i Gina. Fet amb HTML, CSS i JS. GitHub Pages.</small>
-    </div>
-  </footer>
-
-
-
-
-  <script>
-  /* ===== Data ===== */
-const RECIPES = [
-  {
-    id: "pesto-espinacs",
-    title: "Pasta amb pesto d'espinacs",
-    category: "pastas",
-    difficulty: "fàcil",
-    time: 20,
-    servings: 2,
-    img: "https://images.unsplash.com/photo-1526318472351-c75fcf070305?q=80&w=1600&auto=format&fit=crop",
-    ingredients: [
-      { q: 180, unit: "g", name: "pasta curta (fusilli o penne)" },
-      { q: 80, unit: "g", name: "espinacs frescos" },
-      { q: 30, unit: "g", name: "nous o pinyons" },
-      { q: 40, unit: "g", name: "formatge parmesà ratllat" },
-      { q: 1, unit: "grapat", name: "alfàbrega fresca" },
-      { q: 1, unit: "dent", name: "all" },
-      { q: 40, unit: "ml", name: "oli d'oliva verge extra" },
-      { q: 0.5, unit: "unit", name: "llimona (suc)" },
-      { q: 1, unit: "al gust", name: "sal i pebre" }
-    ],
-    steps: [
-      "Bull la pasta en aigua amb sal segons les instruccions.",
-      "Tritura espinacs, nous, parmesà, alfàbrega, all i oli fins a textura cremosa.",
-      "Ajusta amb suc de llimona, sal i pebre.",
-      "Barreja la pasta escorreguda amb el pesto. Serveix amb més parmesà."
-    ],
-    tips: [
-      "Afegeix una mica d'aigua de cocció per emulsionar.",
-      "Substitueix nous per ametlles si vols."
-    ]
-  },
-  º
-  {
-    id: "curri-coco",
-    title: "Pollastre al curri amb coco",
-    category: "carns",
-    difficulty: "mitjana",
-    time: 30,
-    servings: 2,
-    img: "https://images.unsplash.com/photo-1604908177093-9bbef77004f8?q=80&w=1600&auto=format&fit=crop",
-    ingredients: [
-      { q: 300, unit: "g", name: "pit de pollastre a daus" },
-      { q: 1, unit: "unit", name: "ceba mitjana" },
-      { q: 1, unit: "dent", name: "all" },
-      { q: 10, unit: "g", name: "curry en pols" },
-      { q: 200, unit: "ml", name: "llet de coco" },
-      { q: 120, unit: "g", name: "tomàquet triturat" },
-      { q: 15, unit: "ml", name: "oli d'oliva" },
-      { q: 1, unit: "al gust", name: "sal i pebre" },
-      { q: 150, unit: "g", name: "arròs basmati (guarnició)" }
-    ],
-    steps: [
-      "Salta la ceba i l'all amb oli fins que estiguin tendres.",
-      "Afegeix el pollastre i daura lleugerament.",
-      "Incorpora el curry, el tomàquet i la llet de coco. Cou 12–15 min.",
-      "Ajusta de sal i pebre. Serveix amb arròs basmati bullit."
-    ],
-    tips: [
-      "Pots afegir espinacs al final per més verd.",
-      "Controla l'espessor amb una mica d'aigua o més coco."
-    ]
-  }
-];
-
-/* ===== State ===== */
-const $ = (sel, ctx=document) => ctx.querySelector(sel);
-const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
-const state = {
-  query: "",
-  category: "",
-  difficulty: "",
-  timeCap: "",
-  favorites: new Set(JSON.parse(localStorage.getItem("favorites") || "[]")),
-  system: "metric", // metric | imperial
-  current: null
-};
-
-/* ===== Utils ===== */
-function saveFavs(){
-  localStorage.setItem("favorites", JSON.stringify([...state.favorites]));
-}
-function isFav(id){ return state.favorites.has(id); }
-
-function formatQty(q){
-  // Mostra fins a una xifra decimal si cal
-  const n = Math.round(q*10)/10;
-  return (Math.abs(n - Math.round(n)) < 0.05) ? String(Math.round(n)) : String(n);
-}
-
-function convertUnit(q, unit, to){ // mètric <-> imperial
-  if(unit === "g" && to === "imperial") return [q*0.035274, "oz"];
-  if(unit === "oz" && to === "metric") return [q/0.035274, "g"];
-  if(unit === "ml" && to === "imperial") return [q*0.033814, "fl oz"];
-  if(unit === "fl oz" && to === "metric") return [q/0.033814, "ml"];
-  // altres unitats es deixen iguals
-  return [q, unit];
-}
-
-function scaleIngredients(recipe, targetServings, system){
-  const base = recipe.servings;
-  return recipe.ingredients.map(it=>{
-    let q = it.q * (targetServings / base);
-    let unit = it.unit;
-    if(["g","oz","ml","fl oz"].includes(unit)){
-      [q, unit] = convertUnit(q, unit, system);
-    }
-    return { ...it, q, unit };
-  });
-}
-
-/* ===== Render grid ===== */
-function renderGrid(list){
-  const grid = $("#grid");
-  if(!list.length){
-    grid.innerHTML = `<div class="card"><div class="pad"><h3>Sense resultats</h3><p>Ajusta la cerca o els filtres.</p></div></div>`;
-    return;
-  }
-  grid.innerHTML = list.map(r=>{
-    const fav = isFav(r.id) ? "★" : "☆";
-    return `
-    <article class="card">
-      <button class="fav-badge" data-id="${r.id}" title="Favorit" style="position:absolute;margin:10px;background:#ffffffc7;border:1px solid #e9e1ff;border-radius:10px;padding:4px 8px;cursor:pointer">${fav}</button>
-      <img src="${r.img}" alt="${r.title}" loading="lazy">
-      <div class="pad">
-        <h3>${r.title}</h3>
-        <p>${r.time} min · ${r.difficulty}</p>
-        <div class="badges">
-          <span class="badge">${r.category}</span>
-        </div>
-        <div style="margin-top:10px">
-          <button class="primary open" data-id="${r.id}">Veure recepta</button>
-        </div>
-      </div>
-    </article>`;
-  }).join("");
-}
-
-/* ===== Filters ===== */
-function matchesFilters(r){
-  const q = state.query.trim().toLowerCase();
-  const hits = !q || r.title.toLowerCase().includes(q) ||
-    r.ingredients.some(i=> (i.name||"").toLowerCase().includes(q));
-  const cat = !state.category || r.category === state.category;
-  const dif = !state.difficulty || r.difficulty === state.difficulty;
-  const tim = !state.timeCap || r.time <= Number(state.timeCap);
-  return hits && cat && dif && tim;
-}
-function applyFilters(){
-  renderGrid(RECIPES.filter(matchesFilters));
-}
-
-/* ===== Modal ===== */
-function openRecipe(id){
-  const r = RECIPES.find(x=>x.id===id);
-  if(!r) return;
-  state.current = JSON.parse(JSON.stringify(r));
-  const dlg = $("#recipeModal");
-  $("#recipeTitle").textContent = r.title;
-  $("#recipeImg").src = r.img;
-  $("#recipeImg").alt = r.title;
-  $("#metaTime").textContent = `⏱️ ${r.time} min`;
-  $("#metaDifficulty").textContent = `🎯 ${r.difficulty}`;
-  $("#metaCategory").textContent = `🏷️ ${r.category}`;
-  const fav = isFav(r.id) ? "★ Eliminar de favorits" : "☆ Afegir a favorits";
-  $("#btnFav").textContent = fav;
-
-  const servingsInput = $("#servingsInput");
-  servingsInput.value = r.servings;
-
-  renderIngredientsAndSteps();
-
-  // JSON-LD dinamitzat per la recepta
-  injectRecipeLD(r);
-
-  dlg.showModal();
-}
-
-function closeRecipe(){
-  $("#recipeModal").close();
-  state.current = null;
-}
-
-function renderIngredientsAndSteps(){
-  if(!state.current) return;
-  const s = Number($("#servingsInput").value || state.current.servings);
-  const sys = state.system;
-
-  const scaled = scaleIngredients(state.current, s, sys);
-
-  $("#ingredientsList").innerHTML = scaled.map(it=>{
-    const qty = (typeof it.q === "number") ? formatQty(it.q) : it.q;
-    const unit = it.unit && it.unit!=="unit" ? ` ${it.unit}` : "";
-    return `<li>${qty}${unit} · ${it.name}</li>`;
-  }).join("");
-
-  $("#stepsList").innerHTML = state.current.steps.map(x=>`<li>${x}</li>`).join("");
-  $("#tipsList").innerHTML = state.current.tips.map(x=>`<li>${x}</li>`).join("");
-}
-
-/* ===== JSON-LD Recipe ===== */
-function injectRecipeLD(r){
-  const ld = {
-    "@context":"https://schema.org",
-    "@type":"Recipe",
-    "name": r.title,
-    "image": [r.img],
-    "recipeCategory": r.category,
-    "recipeCuisine": "Mediterrània",
-    "recipeYield": `${r.servings} racions`,
-    "totalTime": `PT${r.time}M`,
-    "recipeIngredient": r.ingredients.map(i=>{
-      const qty = typeof i.q === "number" ? i.q : "";
-      const unit = i.unit && i.unit!=="unit" ? ` ${i.unit}` : "";
-      return `${qty}${unit} ${i.name}`.trim();
-    }),
-    "recipeInstructions": r.steps.map(s=>({ "@type":"HowToStep", "text": s })),
-    "inLanguage": "ca",
-    "author": { "@type":"Person", "name":"Sergi i Gina" }
-  };
-  let el = document.getElementById("ld-recipe");
-  if(!el){
-    el = document.createElement("script");
-    el.type = "application/ld+json";
-    el.id = "ld-recipe";
-    document.head.appendChild(el);
-  }
-  el.textContent = JSON.stringify(ld);
-}
-
-/* ===== Share / Print ===== */
-function shareCurrent(){
-  if(!state.current) return;
-  const url = new URL(location.href);
-  url.hash = `#/${state.current.id}`;
-  if(navigator.share){
-    navigator.share({ title: state.current.title, url: url.toString() }).catch(()=>{});
-  }else{
-    prompt("Copia l'enllaç:", url.toString());
-  }
-}
-
-/* ===== Init and events ===== */
-function bindEvents(){
-  $("#q").addEventListener("input", e=>{ state.query = e.target.value; applyFilters(); });
-  $("#filterCategory").addEventListener("change", e=>{ state.category = e.target.value; applyFilters(); });
-  $("#filterDifficulty").addEventListener("change", e=>{ state.difficulty = e.target.value; applyFilters(); });
-  $("#filterTime").addEventListener("change", e=>{ state.timeCap = e.target.value; applyFilters(); });
-
-  $("#grid").addEventListener("click", e=>{
-    const openBtn = e.target.closest(".open");
-    const favBtn = e.target.closest(".fav-badge");
-    if(openBtn){ openRecipe(openBtn.dataset.id); }
-    if(favBtn){
-      const id = favBtn.dataset.id;
-      if(isFav(id)) state.favorites.delete(id); else state.favorites.add(id);
-      saveFavs(); applyFilters();
-    }
-  });
-
-  $("#closeModal").addEventListener("click", closeRecipe);
-  $("#recipeModal").addEventListener("cancel", e=>{ e.preventDefault(); closeRecipe(); });
-
-  $("#btnFav").addEventListener("click", ()=>{
-    if(!state.current) return;
-    const id = state.current.id;
-    if(isFav(id)) state.favorites.delete(id); else state.favorites.add(id);
-    saveFavs();
-    $("#btnFav").textContent = isFav(id) ? "★ Eliminar de favorits" : "☆ Afegir a favorits";
-    applyFilters();
-  });
-
-  $("#servingsInput").addEventListener("change", renderIngredientsAndSteps);
-
-  $("#btnMetric").addEventListener("click", (e)=>{
-    state.system = state.system === "metric" ? "imperial" : "metric";
-    e.currentTarget.textContent = `Unitats: ${state.system === "metric" ? "Mètriques" : "Imperials"}`;
-    e.currentTarget.dataset.system = state.system;
-    renderIngredientsAndSteps();
-  });
-
-  $("#btnPrint").addEventListener("click", ()=>window.print());
-  $("#shareBtn").addEventListener("click", shareCurrent);
-
-  $("#btnFavorites").addEventListener("click", ()=>{
-    const favs = RECIPES.filter(r=> isFav(r.id));
-    renderGrid(favs.length ? favs : []);
-  });
-  $("#btnAll").addEventListener("click", (e)=>{ e.preventDefault(); applyFilters(); });
-
-  window.addEventListener("hashchange", handleHashRoute);
-}
-
-function handleHashRoute(){
-  const hash = location.hash.slice(1); // "#/id"
-  if(hash.startsWith("/")){
-    const id = hash.slice(1);
-    const r = RECIPES.find(x=>x.id===id);
-    if(r) openRecipe(id);
-  }
-}
-
-function main(){
-  $("#year").textContent = new Date().getFullYear();
-  bindEvents();
-  applyFilters();
-  handleHashRoute(); // obre si ve amb #/id
-}
-
-document.addEventListener("DOMContentLoaded", main);
-
-  </script>
-
-
-
+  <script defer src="assets/js/app.js"></script>
 </body>
 </html>
