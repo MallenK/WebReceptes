@@ -1,84 +1,14 @@
-// ===== Recetas de ejemplo =====
-const defaultRecipes = [
+// ===== Config =====
+const VERSION = '1.0.0'; // súbelo si cambias recetas.json para forzar recarga
+
+// ===== Fallback por si el fetch falla en local o sin conexión =====
+const FALLBACK_DEFAULTS = [
   {
-    id: 'carbonara-nata',
+    id: 'fallback-carbonara',
     title: 'Pasta carbonara con nata',
-    image: 'https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?q=80&w=1280&auto=format&fit=crop',
+    image: 'https://via.placeholder.com/800x500?text=Receta',
     category: 'Pastas', difficulty: 'Fácil', time: 20,
-    tags: ['rápido','sartén'],
-    ingredients: [
-      '200 g de pasta', '120 g de bacon', '200 ml de nata',
-      '1 yema', 'Queso rallado', 'Sal y pimienta'
-    ],
-    steps: [
-      'Cuece la pasta al dente.',
-      'Dora el bacon. Añade nata y pimienta. Aparta del fuego.',
-      'Mezcla con la pasta y liga con la yema. Añade queso.'
-    ]
-  },
-  {
-    id: 'pollo-curry',
-    title: 'Pollo al curry fácil',
-    image: 'https://images.unsplash.com/photo-1617195737492-7e0b9f37f1b7?q=80&w=1280&auto=format&fit=crop',
-    category: 'Carnes', difficulty: 'Media', time: 35,
-    tags: ['arroz','salsa'],
-    ingredients: [
-      '400 g de pechuga de pollo', '1 cebolla', '200 ml de leche de coco',
-      '1 cda curry', 'Aceite', 'Sal'
-    ],
-    steps: [
-      'Sofríe cebolla picada.',
-      'Añade pollo en dados y dora.',
-      'Agrega curry y leche de coco. Cocina 15 min.'
-    ]
-  },
-  {
-    id: 'tarta-queso',
-    title: 'Tarta de queso al horno',
-    image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a17b2?q=80&w=1280&auto=format&fit=crop',
-    category: 'Postres', difficulty: 'Media', time: 60,
-    tags: ['horno','dulce'],
-    ingredients: [
-      '200 g de galletas', '100 g de mantequilla', '500 g de queso crema',
-      '200 g de azúcar', '3 huevos', '200 ml de nata'
-    ],
-    steps: [
-      'Tritura las galletas y mezcla con mantequilla. Presiona en un molde.',
-      'Bate queso crema, azúcar, huevos y nata.',
-      'Vierte sobre la base y hornea a 180 °C durante 45 min.'
-    ]
-  },
-  {
-    id: 'ensalada-quinoa',
-    title: 'Ensalada fresca de quinoa',
-    image: 'https://images.unsplash.com/photo-1604908176997-9e4d9d54e07b?q=80&w=1280&auto=format&fit=crop',
-    category: 'Vegetariano', difficulty: 'Fácil', time: 15,
-    tags: ['frío','saludable'],
-    ingredients: [
-      '150 g de quinoa cocida', '1 tomate', '1 pepino',
-      '1/2 cebolla morada', 'Aceite de oliva', 'Sal y limón'
-    ],
-    steps: [
-      'Cocer la quinoa y enfriar.',
-      'Cortar las verduras en dados pequeños.',
-      'Mezclar todo y aliñar con aceite, sal y limón.'
-    ]
-  },
-  {
-    id: 'tostadas-aguacate',
-    title: 'Tostadas de aguacate',
-    image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1280&auto=format&fit=crop',
-    category: 'Desayunos', difficulty: 'Fácil', time: 10,
-    tags: ['rápido','vegano'],
-    ingredients: [
-      '2 rebanadas de pan', '1 aguacate maduro', 'Sal',
-      'Pimienta', 'Zumo de limón'
-    ],
-    steps: [
-      'Tostar el pan.',
-      'Machacar el aguacate con sal, pimienta y limón.',
-      'Untar sobre el pan y servir.'
-    ]
+    tags: ['rápido'], ingredients: ['pasta','bacon','nata','yema','queso'], steps: ['Cuece','Salsa','Mezcla']
   }
 ];
 
@@ -92,10 +22,25 @@ const state = {
   q: '', cat: '', diff: '', onlyFav: false
 };
 
-// ===== Carga y guardado =====
-function loadRecipes() {
+// ===== Utilidades de datos =====
+async function fetchDefaults() {
+  try {
+    const url = `assets/data/recetas.json?v=${encodeURIComponent(VERSION)}`;
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(res.status + ' ' + res.statusText);
+    const json = await res.json();
+    if (!Array.isArray(json)) throw new Error('JSON raíz no es array');
+    return json;
+  } catch (e) {
+    console.warn('Usando fallback por error cargando recetas.json:', e.message);
+    return FALLBACK_DEFAULTS;
+  }
+}
+
+function loadRecipes(defaults) {
   const user = JSON.parse(localStorage.getItem(LS_KEYS.user) || '[]');
-  const map = new Map(defaultRecipes.map(r => [r.id, r]));
+  // merge por id, prioriza usuario
+  const map = new Map((defaults || []).map(r => [r.id, r]));
   for (const r of user) {
     map.set(r.id || crypto.randomUUID(), { ...r, id: r.id || crypto.randomUUID() });
   }
@@ -113,7 +58,7 @@ const grid = $('#grid');
 function render() {
   const q = state.q.toLowerCase();
   const filtered = state.recipes.filter(r => {
-    const matchQ = !q || r.title.toLowerCase().includes(q) || r.ingredients.some(i => i.toLowerCase().includes(q));
+    const matchQ = !q || r.title.toLowerCase().includes(q) || (r.ingredients||[]).some(i => i.toLowerCase().includes(q));
     const matchCat = !state.cat || r.category === state.cat;
     const matchDiff = !state.diff || r.difficulty === state.diff;
     const matchFav = !state.onlyFav || state.favs.has(r.id);
@@ -136,9 +81,9 @@ function render() {
       <div class="card-body">
         <h3 class="title-sm">${r.title}</h3>
         <div class="row">
-          <span class="pill">🍽️ ${r.category}</span>
-          <span class="pill">🧩 ${r.difficulty}</span>
-          <span class="pill">⏱️ ${r.time} min</span>
+          <span class="pill">🍽️ ${r.category || '—'}</span>
+          <span class="pill">🧩 ${r.difficulty || '—'}</span>
+          <span class="pill">⏱️ ${r.time ?? '—'} min</span>
         </div>
         <div class="tags">${(r.tags || []).map(t => `<span class="tag">#${t}</span>`).join('')}</div>
       </div>
@@ -157,12 +102,12 @@ function openModal(r) {
   $('#mImg').loading = 'lazy';
   $('#mImg').decoding = 'async';
   $('#mImg').alt = r.title;
-  $('#mCat').textContent = '🍽️ ' + r.category;
-  $('#mDiff').textContent = '🧩 ' + r.difficulty;
-  $('#mTime').textContent = '⏱️ ' + r.time + ' min';
+  $('#mCat').textContent = '🍽️ ' + (r.category || '—');
+  $('#mDiff').textContent = '🧩 ' + (r.difficulty || '—');
+  $('#mTime').textContent = '⏱️ ' + (r.time ?? '—') + ' min';
   $('#mTags').innerHTML = (r.tags || []).map(t => `<span class="tag">#${t}</span>`).join('');
-  $('#mIngs').innerHTML = r.ingredients.map(i => `<li>${i}</li>`).join('');
-  $('#mSteps').innerHTML = r.steps.map(s => `<li>${s}</li>`).join('');
+  $('#mIngs').innerHTML = (r.ingredients || []).map(i => `<li>${i}</li>`).join('');
+  $('#mSteps').innerHTML = (r.steps || []).map(s => `<li>${s}</li>`).join('');
   modal.showModal();
 }
 
@@ -192,7 +137,7 @@ addForm.addEventListener('submit', e => {
   const user = JSON.parse(localStorage.getItem(LS_KEYS.user) || '[]');
   user.push(rec);
   saveUserRecipes(user);
-  loadRecipes();
+  loadRecipes(window.__defaults__ || []);
   render();
   addForm.reset();
   alert('Receta guardada en este navegador.');
@@ -212,14 +157,14 @@ document.getElementById('importFile').onchange = e => {
     try {
       const arr = JSON.parse(ev.target.result);
       if (!Array.isArray(arr)) throw new Error('Formato no válido');
-      saveUserRecipes(arr); loadRecipes(); render(); alert('Datos importados');
+      saveUserRecipes(arr); loadRecipes(window.__defaults__ || []); render(); alert('Datos importados');
     } catch (err) { alert('Error al importar: ' + err.message); }
   };
   reader.readAsText(file);
 };
 document.getElementById('resetBtn').onclick = () => {
   if (confirm('Esto borrará tus recetas añadidas (no las de ejemplo). ¿Continuar?')) {
-    localStorage.removeItem(LS_KEYS.user); loadRecipes(); render();
+    localStorage.removeItem(LS_KEYS.user); loadRecipes(window.__defaults__ || []); render();
   }
 };
 
@@ -246,5 +191,9 @@ if (menuToggle && mainNav) {
 }
 
 // ===== Init =====
-loadRecipes();
-render();
+(async function init(){
+  const defaults = await fetchDefaults();
+  window.__defaults__ = defaults;       // cache en memoria para merges posteriores
+  loadRecipes(defaults);
+  render();
+})();
