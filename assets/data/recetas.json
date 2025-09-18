@@ -205,5 +205,35 @@
     "steps": [
       "4"
     ]
+  },
+  {
+    "id": "hola-gina",
+    "title": "HOLA GINA",
+    "image": "https://share.google/images/DOFWAQ5gBjrI5FhFP",
+    "category": "Carnes",
+    "difficulty": "Fácil",
+    "time": 23,
+    "tags": [
+      "r",
+      "gerg",
+      "etgert"
+    ],
+    "ingredients": [
+      "fegr",
+      "gbvet",
+      "gb",
+      "hrtb",
+      "ter",
+      "bgrht",
+      "hbr"
+    ],
+    "steps": [
+      "gevr",
+      "tgb",
+      "er",
+      "fbsg",
+      "rtb",
+      "rty"
+    ]
   }
 ]
