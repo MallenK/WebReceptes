@@ -1,27 +1,24 @@
-// api/add-recipe.js
-const OWNER = process.env.OWNER;               // ej. "sergimallen"
-const REPO  = process.env.REPO;                // ej. "recetas-sergi-gina"
+const OWNER = process.env.OWNER;
+const REPO  = process.env.REPO;
 const PATH  = process.env.FILE_PATH || "assets/data/recetas.json";
-const ORIG  = process.env.ALLOW_ORIGIN || "*";
-const TOKEN = process.env.GITHUB_TOKEN;        // PAT con Contents: Read/Write
-const ALLOW = (process.env.ALLOW_ORIGIN || "").split(",").map(s=>s.trim());
+const TOKEN = process.env.GITHUB_TOKEN;
+const ALLOW = (process.env.ALLOW_ORIGIN || "")
+  .split(",").map(s => s.trim()).filter(Boolean);
 
 export default async function handler(req, res) {
   const origin = req.headers.origin || "";
-  if (ALLOW.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
+  const isBrowser = !!origin;
+  const isAllowed = !isBrowser || ALLOW.includes(origin); // sin Origin => permitir
+
   res.setHeader("Vary", "Origin");
-  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (isBrowser && isAllowed) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  }
+
   if (req.method === "OPTIONS") return res.status(204).end();
-  if (!ALLOW.includes(origin)) return res.status(403).json({ error: "Origin not allowed" });
-  
-  // CORS
-  res.setHeader("Access-Control-Allow-Origin", ORIG);
-  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  if (req.method === "OPTIONS") return res.status(204).end();
+  if (!isAllowed) return res.status(403).json({ error: "Origin not allowed" });
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
   if (!TOKEN || !OWNER || !REPO) return res.status(500).json({ error: "Missing env vars" });
 
