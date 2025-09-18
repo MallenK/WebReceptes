@@ -4,8 +4,19 @@ const REPO  = process.env.REPO;                // ej. "recetas-sergi-gina"
 const PATH  = process.env.FILE_PATH || "assets/data/recetas.json";
 const ORIG  = process.env.ALLOW_ORIGIN || "*";
 const TOKEN = process.env.GITHUB_TOKEN;        // PAT con Contents: Read/Write
+const ALLOW = (process.env.ALLOW_ORIGIN || "").split(",").map(s=>s.trim());
 
 export default async function handler(req, res) {
+  const origin = req.headers.origin || "";
+  if (ALLOW.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") return res.status(204).end();
+  if (!ALLOW.includes(origin)) return res.status(403).json({ error: "Origin not allowed" });
+  
   // CORS
   res.setHeader("Access-Control-Allow-Origin", ORIG);
   res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
