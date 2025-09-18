@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Recetas de Sergi y Gina</title>
-  <meta name="description" content="Recetario de Sergi y Gina. Búsqueda, filtros, favoritos y añadir recetas. 100% estática para GitHub Pages.">
+  <title>Receptes de Sergi i Gina</title>
+  <meta name="description" content="Receptari de Sergi i Gina. Cerca, filtres, favorits i afegir receptes. 100% estàtica per a GitHub Pages.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
@@ -13,102 +13,101 @@
 <body>
   <div class="container">
     <header class="topbar">
-  <div class="title">
-    <div class="logo" aria-hidden="true"></div>
-    <div>
-      <h1>Recetas de Sergi y Gina</h1>
-      <div class="sub">Búsqueda, filtros, favoritos y edición local.</div>
-    </div>
-  </div>
+      <div class="title">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Receptes de Sergi i Gina</h1>
+          <div class="sub">Cerca, filtres, favorits i edició local.</div>
+        </div>
+      </div>
 
-  <!-- Botón hamburguesa en móvil -->
-  <button id="menuToggle" class="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
-    ☰
-  </button>
-</header>
+      <!-- Botó hamburguesa al mòbil -->
+      <button id="menuToggle" class="menu-toggle" aria-label="Obrir menú" aria-expanded="false" aria-controls="mainNav">
+        ☰
+      </button>
+    </header>
 
-    <!-- Panel de navegación: acciones + filtros -->
+    <!-- Panell de navegació: accions + filtres -->
     <nav id="mainNav" class="nav-panel" hidden>
       <div class="actions">
-        <button id="exportBtn" class="btn">Exportar JSON</button>
-        <label class="btn" for="importFile">Importar JSON</label>
+        <button id="exportBtn" class="btn">Exporta JSON</button>
+        <label class="btn" for="importFile">Importa JSON</label>
         <input id="importFile" type="file" accept="application/json" hidden>
-        <button id="resetBtn" class="btn" title="Borra recetas añadidas por ti (no las de ejemplo)">Resetear añadidas</button>
-        <a class="btn primary" href="#" id="ghHint">Guía GitHub Pages</a>
+        <button id="resetBtn" class="btn" title="Esborra les receptes afegides per tu (no les d'exemple)">Restableix afegides</button>
+        <a class="btn primary" href="#" id="ghHint">Guia GitHub Pages</a>
       </div>
     
-      <section class="controls" aria-label="Controles de búsqueda y filtrado">
-        <input id="q" type="search" placeholder="Buscar por nombre o ingrediente" aria-label="Buscar">
+      <section class="controls" aria-label="Controls de cerca i filtratge">
+        <input id="q" type="search" placeholder="Cerca per nom o ingredient" aria-label="Cerca">
         <select id="cat">
-          <option value="">Todas las categorías</option>
-          <option>Pastas</option><option>Carnes</option><option>Vegetariano</option>
-          <option>Postres</option><option>Desayunos</option>
+          <option value="">Totes les categories</option>
+          <option>Pastes</option><option>Carns</option><option>Vegetarià</option>
+          <option>Postres</option><option>Esmorzars</option>
         </select>
         <select id="diff">
-          <option value="">Dificultad</option>
-          <option>Fácil</option><option>Media</option><option>Difícil</option>
+          <option value="">Dificultat</option>
+          <option>Fàcil</option><option>Mitjana</option><option>Difícil</option>
         </select>
-        <label class="fav-toggle pill"><input id="onlyFav" type="checkbox"> Solo favoritos</label>
+        <label class="fav-toggle pill"><input id="onlyFav" type="checkbox"> Només favorits</label>
       </section>
     </nav>
 
-
-    <section class="controls" aria-label="Controles de búsqueda y filtrado">
-      <input id="q" type="search" placeholder="Buscar por nombre o ingrediente" aria-label="Buscar">
+    <section class="controls" aria-label="Controls de cerca i filtratge">
+      <input id="q" type="search" placeholder="Cerca per nom o ingredient" aria-label="Cerca">
       <select id="cat">
-        <option value="">Todas las categorías</option>
-        <option>Pastas</option>
-        <option>Carnes</option>
-        <option>Vegetariano</option>
+        <option value="">Totes les categories</option>
+        <option>Pastes</option>
+        <option>Carns</option>
+        <option>Vegetarià</option>
         <option>Postres</option>
-        <option>Desayunos</option>
+        <option>Esmorzars</option>
       </select>
       <select id="diff">
-        <option value="">Dificultad</option>
-        <option>Fácil</option>
-        <option>Media</option>
+        <option value="">Dificultat</option>
+        <option>Fàcil</option>
+        <option>Mitjana</option>
         <option>Difícil</option>
       </select>
-      <label class="fav-toggle pill"><input id="onlyFav" type="checkbox"> Solo favoritos</label>
+      <label class="fav-toggle pill"><input id="onlyFav" type="checkbox"> Només favorits</label>
     </section>
 
     <details class="add">
-      <summary>➕ Añadir receta (se guarda en tu navegador)</summary>
+      <summary>➕ Afegir recepta (es guarda al teu navegador)</summary>
       <form id="addForm" class="form-grid" autocomplete="off">
-        <input name="title" placeholder="Título" required>
-        <input name="image" placeholder="URL de imagen (opcional)">
-        <input name="category" placeholder="Categoría" list="cats">
-        <datalist id="cats"><option>Pastas</option><option>Carnes</option><option>Vegetariano</option><option>Postres</option><option>Desayunos</option></datalist>
+        <input name="title" placeholder="Títol" required>
+        <input name="image" placeholder="URL d'imatge (opcional)">
+        <input name="category" placeholder="Categoria" list="cats">
+        <datalist id="cats"><option>Pastes</option><option>Carns</option><option>Vegetarià</option><option>Postres</option><option>Esmorzars</option></datalist>
         <select name="difficulty">
-          <option value="Fácil">Fácil</option>
-          <option value="Media">Media</option>
+          <option value="Fàcil">Fàcil</option>
+          <option value="Mitjana">Mitjana</option>
           <option value="Difícil">Difícil</option>
         </select>
-        <input name="time" placeholder="Minutos aprox" type="number" min="1">
-        <input name="tags" placeholder="Tags separadas por coma (ej: rápido, horno)">
-        <textarea name="ingredients" placeholder="Ingredientes, uno por línea" required></textarea>
-        <textarea name="steps" placeholder="Pasos, uno por párrafo" required></textarea>
-        <button class="btn primary" type="submit">Guardar</button>
+        <input name="time" placeholder="Minuts aprox" type="number" min="1">
+        <input name="tags" placeholder="Etiquetes separades per coma (ex: ràpid, forn)">
+        <textarea name="ingredients" placeholder="Ingredients, un per línia" required></textarea>
+        <textarea name="steps" placeholder="Passos, un per paràgraf" required></textarea>
+        <button class="btn primary" type="submit">Desa</button>
       </form>
     </details>
 
     <section id="grid" class="grid" aria-live="polite"></section>
 
     <footer>
-      Hecha con HTML, CSS y JS puros. Datos de usuario en <code>localStorage</code>. Copia este archivo como <code>index.html</code> y súbelo a GitHub Pages.
+      Feta amb HTML, CSS i JS purs. Dades d'usuari a <code>localStorage</code>. Copia aquest fitxer com <code>index.html</code> i puja’l a GitHub Pages.
     </footer>
   </div>
 
-  <!-- Modal receta -->
+  <!-- Modal recepta -->
   <dialog id="recipeModal" aria-labelledby="mTitle">
     <div class="modal-header">
       <h3 id="mTitle" style="margin:0"></h3>
-      <button class="x" aria-label="Cerrar" onclick="modal.close()">✕</button>
+      <button class="x" aria-label="Tanca" onclick="modal.close()">✕</button>
     </div>
     <div class="modal-body">
       <div class="cols">
         <div>
-          <img id="mImg" class="thumb" alt="Imagen de la receta">
+          <img id="mImg" class="thumb" alt="Imatge de la recepta">
           <div class="row">
             <span class="pill" id="mCat"></span>
             <span class="pill" id="mDiff"></span>
@@ -117,9 +116,9 @@
           <div class="tags" id="mTags"></div>
         </div>
         <div>
-          <h4>Ingredientes</h4>
+          <h4>Ingredients</h4>
           <ul id="mIngs" class="muted"></ul>
-          <h4>Pasos</h4>
+          <h4>Passos</h4>
           <ol id="mSteps" class="muted"></ol>
         </div>
       </div>
