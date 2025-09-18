@@ -171,5 +171,22 @@
     "steps": [
       "8"
     ]
+  },
+  {
+    "id": "6",
+    "title": "6",
+    "image": "6",
+    "category": "6",
+    "difficulty": "Fácil",
+    "time": 6,
+    "tags": [
+      "6"
+    ],
+    "ingredients": [
+      "6"
+    ],
+    "steps": [
+      "6"
+    ]
   }
 ]
