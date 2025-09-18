@@ -8,8 +8,8 @@ const defaultRecipes = [
     category: 'Pastas', difficulty: 'Fácil', time: 20,
     tags: ['rápido','sartén'],
     ingredients: [
-      '200 g de pasta', '120 g de bacon', '200 ml de nata', '1 yema',
-      'Queso rallado', 'Sal y pimienta'
+      '200 g de pasta', '120 g de bacon', '200 ml de nata',
+      '1 yema', 'Queso rallado', 'Sal y pimienta'
     ],
     steps: [
       'Cuece la pasta al dente.',
@@ -32,8 +32,57 @@ const defaultRecipes = [
       'Añade pollo en dados y dora.',
       'Agrega curry y leche de coco. Cocina 15 min.'
     ]
+  },
+  {
+    id: 'tarta-queso',
+    title: 'Tarta de queso al horno',
+    image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a17b2?q=80&w=1280&auto=format&fit=crop',
+    category: 'Postres', difficulty: 'Media', time: 60,
+    tags: ['horno','dulce'],
+    ingredients: [
+      '200 g de galletas', '100 g de mantequilla', '500 g de queso crema',
+      '200 g de azúcar', '3 huevos', '200 ml de nata'
+    ],
+    steps: [
+      'Tritura las galletas y mezcla con mantequilla. Presiona en un molde.',
+      'Bate queso crema, azúcar, huevos y nata.',
+      'Vierte sobre la base y hornea a 180 °C durante 45 min.'
+    ]
+  },
+  {
+    id: 'ensalada-quinoa',
+    title: 'Ensalada fresca de quinoa',
+    image: 'https://images.unsplash.com/photo-1604908176997-9e4d9d54e07b?q=80&w=1280&auto=format&fit=crop',
+    category: 'Vegetariano', difficulty: 'Fácil', time: 15,
+    tags: ['frío','saludable'],
+    ingredients: [
+      '150 g de quinoa cocida', '1 tomate', '1 pepino',
+      '1/2 cebolla morada', 'Aceite de oliva', 'Sal y limón'
+    ],
+    steps: [
+      'Cocer la quinoa y enfriar.',
+      'Cortar las verduras en dados pequeños.',
+      'Mezclar todo y aliñar con aceite, sal y limón.'
+    ]
+  },
+  {
+    id: 'tostadas-aguacate',
+    title: 'Tostadas de aguacate',
+    image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1280&auto=format&fit=crop',
+    category: 'Desayunos', difficulty: 'Fácil', time: 10,
+    tags: ['rápido','vegano'],
+    ingredients: [
+      '2 rebanadas de pan', '1 aguacate maduro', 'Sal',
+      'Pimienta', 'Zumo de limón'
+    ],
+    steps: [
+      'Tostar el pan.',
+      'Machacar el aguacate con sal, pimienta y limón.',
+      'Untar sobre el pan y servir.'
+    ]
   }
 ];
+
 
 // ===== Estado =====
 const $ = s => document.querySelector(s);
