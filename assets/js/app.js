@@ -147,7 +147,7 @@ addForm.addEventListener('submit', async e => {
     if (!resp.ok) throw new Error(data?.error || 'Error guardando');
     await refreshFromJson();           // vuelve a leer assets/data/recetas.json
     addForm.reset();
-    window.reload();
+    location.reload();
   } catch (err) {
     alert(err);
     // fallback localStorage si falla el backend (ya lo tienes)
