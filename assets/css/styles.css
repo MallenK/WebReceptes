@@ -115,3 +115,36 @@ footer{margin:26px 0 8px; color:var(--muted); font-size:13px}
   .cols{grid-template-columns:1fr}
 }
 
+
+
+/* ===== Topbar + Menú responsive ===== */
+.topbar{
+  display:grid; grid-template-columns:1fr auto; align-items:center;
+  gap:16px; margin-bottom:12px;
+}
+.menu-toggle{
+  display:none; border:1px solid var(--line); background:#fff; color:var(--text);
+  border-radius:12px; padding:10px 14px; cursor:pointer;
+}
+.menu-toggle:focus{ outline:3px solid rgba(123,77,214,.3); outline-offset:2px }
+
+/* Panel de navegación (acciones + filtros) */
+.nav-panel{ display:grid; gap:14px; margin-bottom:16px }
+@media (max-width:900px){
+  .menu-toggle{ display:inline-block }
+  /* En móvil el panel se colapsa por defecto (usamos [hidden]) */
+  .nav-panel[hidden]{ display:none }
+  /* Contenido apilado y full width */
+  .nav-panel .actions{ display:grid; grid-template-columns:1fr 1fr; gap:10px }
+  .nav-panel .btn{ width:100% }
+  .controls{ grid-template-columns:1fr; }
+}
+@media (max-width:520px){
+  .nav-panel .actions{ grid-template-columns:1fr }
+}
+
+/* Transición del panel (opcional, accesible) */
+@media (prefers-reduced-motion: no-preference){
+  .nav-panel{ transition:max-height .25s ease }
+}
+
