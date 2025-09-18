@@ -12,14 +12,23 @@
 </head>
 <body>
   <div class="container">
-    <header>
-      <div class="title">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>Recetas de Sergi y Gina</h1>
-          <div class="sub">Búsqueda, filtros, favoritos y edición local.</div>
-        </div>
-      </div>
+    <header class="topbar">
+  <div class="title">
+    <div class="logo" aria-hidden="true"></div>
+    <div>
+      <h1>Recetas de Sergi y Gina</h1>
+      <div class="sub">Búsqueda, filtros, favoritos y edición local.</div>
+    </div>
+  </div>
+
+  <!-- Botón hamburguesa en móvil -->
+  <button id="menuToggle" class="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+    ☰
+  </button>
+</header>
+
+    <!-- Panel de navegación: acciones + filtros -->
+    <nav id="mainNav" class="nav-panel" hidden>
       <div class="actions">
         <button id="exportBtn" class="btn">Exportar JSON</button>
         <label class="btn" for="importFile">Importar JSON</label>
@@ -27,7 +36,22 @@
         <button id="resetBtn" class="btn" title="Borra recetas añadidas por ti (no las de ejemplo)">Resetear añadidas</button>
         <a class="btn primary" href="#" id="ghHint">Guía GitHub Pages</a>
       </div>
-    </header>
+    
+      <section class="controls" aria-label="Controles de búsqueda y filtrado">
+        <input id="q" type="search" placeholder="Buscar por nombre o ingrediente" aria-label="Buscar">
+        <select id="cat">
+          <option value="">Todas las categorías</option>
+          <option>Pastas</option><option>Carnes</option><option>Vegetariano</option>
+          <option>Postres</option><option>Desayunos</option>
+        </select>
+        <select id="diff">
+          <option value="">Dificultad</option>
+          <option>Fácil</option><option>Media</option><option>Difícil</option>
+        </select>
+        <label class="fav-toggle pill"><input id="onlyFav" type="checkbox"> Solo favoritos</label>
+      </section>
+    </nav>
+
 
     <section class="controls" aria-label="Controles de búsqueda y filtrado">
       <input id="q" type="search" placeholder="Buscar por nombre o ingrediente" aria-label="Buscar">
