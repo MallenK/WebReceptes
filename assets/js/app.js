@@ -1,5 +1,6 @@
 // ===== Config =====
 const VERSION = '1.0.0'; // súbelo si cambias recetas.json para forzar recarga
+const API_URL = "https://web-receptes.vercel.app/api/add-recipe";
 
 // ===== Fallback por si el fetch falla en local o sin conexión =====
 const FALLBACK_DEFAULTS = [
@@ -120,28 +121,41 @@ function toggleFav(id, node) {
 
 // ===== Formulario añadir =====
 const addForm = document.getElementById('addForm');
-addForm.addEventListener('submit', e => {
+// Arriba del archivo
+const API_URL = "https://<tu-proyecto>.vercel.app/api/add-recipe";
+
+// En el submit del formulario
+addForm.addEventListener('submit', async e => {
   e.preventDefault();
   const fd = new FormData(addForm);
-  const rec = {
-    id: crypto.randomUUID(),
-    title: fd.get('title').trim(),
-    image: fd.get('image').trim(),
-    category: fd.get('category').trim() || 'Sin categoría',
+  const payload = {
+    title: fd.get('title'),
+    image: fd.get('image'),
+    category: fd.get('category'),
     difficulty: fd.get('difficulty'),
-    time: Number(fd.get('time') || 0) || 0,
-    tags: (fd.get('tags') || '').split(',').map(s => s.trim()).filter(Boolean),
-    ingredients: (fd.get('ingredients') || '').split('\n').map(s => s.trim()).filter(Boolean),
-    steps: (fd.get('steps') || '').split('\n').map(s => s.trim()).filter(Boolean)
+    time: fd.get('time'),
+    tags: fd.get('tags'),
+    ingredients: fd.get('ingredients'),
+    steps: fd.get('steps')
   };
-  const user = JSON.parse(localStorage.getItem(LS_KEYS.user) || '[]');
-  user.push(rec);
-  saveUserRecipes(user);
-  loadRecipes(window.__defaults__ || []);
-  render();
-  addForm.reset();
-  alert('Receta guardada en este navegador.');
+
+  try {
+    const resp = await fetch(API_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data?.error || 'Error guardando');
+    await refreshFromJson();           // vuelve a leer assets/data/recetas.json
+    addForm.reset();
+    alert('Receta guardada en recetas.json');
+  } catch (err) {
+    alert(err);
+    // fallback localStorage si falla el backend (ya lo tienes)
+  }
 });
+
 
 // ===== Exportar / Importar / Resetear =====
 document.getElementById('exportBtn').onclick = () => {
