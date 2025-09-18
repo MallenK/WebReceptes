@@ -1,4 +1,3 @@
-
 // ===== Recetas de ejemplo =====
 const defaultRecipes = [
   {
@@ -83,7 +82,6 @@ const defaultRecipes = [
   }
 ];
 
-
 // ===== Estado =====
 const $ = s => document.querySelector(s);
 const LS_KEYS = { user: 'sg_recipes_user', fav: 'sg_recipes_favs' };
@@ -130,12 +128,11 @@ function render() {
   grid.innerHTML = filtered.map(r => `
     <article class="card" aria-label="Receta ${r.title}">
       <img class="thumb"
-     src="${r.image || 'https://via.placeholder.com/800x500?text=Receta'}"
-     alt="${r.title}"
-     loading="lazy"
-     decoding="async"
-     sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 33vw">
-
+           src="${r.image || 'https://via.placeholder.com/800x500?text=Receta'}"
+           alt="${r.title}"
+           loading="lazy"
+           decoding="async"
+           sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 33vw">
       <div class="card-body">
         <h3 class="title-sm">${r.title}</h3>
         <div class="row">
@@ -227,84 +224,27 @@ document.getElementById('resetBtn').onclick = () => {
 };
 
 // ===== Controles de filtro =====
-$('#q').addEventListener('input', () => { state.q = q.value; render(); });
-$('#cat').onchange = () => { state.cat = cat.value; render(); };
-$('#diff').onchange = () => { state.diff = diff.value; render(); };
-$('#onlyFav').onchange = () => { state.onlyFav = onlyFav.checked; render(); };
+const qEl = document.getElementById('q');
+const catEl = document.getElementById('cat');
+const diffEl = document.getElementById('diff');
+const onlyFavEl = document.getElementById('onlyFav');
 
-document.getElementById('ghHint').onclick = e => {
-  e.preventDefault();
-  alert('Sube este archivo como index.html a un repo público y activa Settings → Pages → Deploy from branch.');
-};
+qEl.addEventListener('input', () => { state.q = qEl.value; render(); });
+catEl.onchange = () => { state.cat = catEl.value; render(); };
+diffEl.onchange = () => { state.diff = diffEl.value; render(); };
+onlyFavEl.onchange = () => { state.onlyFav = onlyFavEl.checked; render(); };
 
-
-
-
-/* ——— Responsivo: tipografía y layout ——— */
-:root{ --space:16px }
-.container{ padding:clamp(16px, 3vw, 32px) }
-h1{ font-size:clamp(22px, 4.5vw, 32px) }
-
-/* Grid fluido y cartas adaptable */
-.grid{
-  grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
-  gap:clamp(12px, 2.5vw, 18px);
-}
-@media (max-width:1024px){
-  .controls{ grid-template-columns:1fr 1fr }
-}
-@media (max-width:768px){
-  .controls{ grid-template-columns:1fr }
-  .actions{ gap:8px }
-  .btn{ width:100% }
-}
-
-/* Diálogo: a pantalla completa en móvil */
-@media (max-width:600px){
-  dialog{
-    width:100vw; height:100dvh; max-width:none; max-height:none;
-    border-radius:0;
-  }
-  .modal-body{ padding:16px }
-  .cols{ grid-template-columns:1fr; gap:12px }
-}
-
-/* Objetivos táctiles (mín. 44x44) */
-button, .btn, .fav, select, input[type="checkbox"]{
-  min-height:44px; min-width:44px;
-}
-@media (pointer:coarse){
-  .btn{ padding:12px 16px }
-}
-
-/* Imágenes fluidas */
-.thumb{ width:100%; height:auto; object-fit:cover }
-
-/* Accesibilidad movimiento reducido */
-@media (prefers-reduced-motion: reduce){
-  *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important }
-}
-
-
-
-
-// ===== Init =====
-
-// ===== Toggle menú móvil =====
+// ===== Toggle menú móvil (si existe) =====
 const menuToggle = document.getElementById('menuToggle');
 const mainNav = document.getElementById('mainNav');
+if (menuToggle && mainNav) {
+  menuToggle.addEventListener('click', () => {
+    const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', String(!isOpen));
+    mainNav.hidden = isOpen;
+  });
+}
 
-menuToggle.addEventListener('click', () => {
-  const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-  menuToggle.setAttribute('aria-expanded', String(!isOpen));
-  if (isOpen) {
-    mainNav.hidden = true;
-  } else {
-    mainNav.hidden = false;
-  }
-});
-
-
-
+// ===== Init =====
 loadRecipes();
 render();
