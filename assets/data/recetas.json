@@ -1,4 +1,3 @@
-
 [
   {
     "id": "carbonara-nata",
@@ -7,9 +6,23 @@
     "category": "Pastas",
     "difficulty": "Fácil",
     "time": 20,
-    "tags": ["rápido","sartén"],
-    "ingredients": ["200 g de pasta","120 g de bacon","200 ml de nata","1 yema","Queso rallado","Sal y pimienta"],
-    "steps": ["Cuece la pasta al dente.","Dora el bacon. Añade nata y pimienta. Aparta del fuego.","Mezcla con la pasta y liga con la yema. Añade queso."]
+    "tags": [
+      "rápido",
+      "sartén"
+    ],
+    "ingredients": [
+      "200 g de pasta",
+      "120 g de bacon",
+      "200 ml de nata",
+      "1 yema",
+      "Queso rallado",
+      "Sal y pimienta"
+    ],
+    "steps": [
+      "Cuece la pasta al dente.",
+      "Dora el bacon. Añade nata y pimienta. Aparta del fuego.",
+      "Mezcla con la pasta y liga con la yema. Añade queso."
+    ]
   },
   {
     "id": "pollo-curry",
@@ -18,9 +31,23 @@
     "category": "Carnes",
     "difficulty": "Media",
     "time": 35,
-    "tags": ["arroz","salsa"],
-    "ingredients": ["400 g de pechuga de pollo","1 cebolla","200 ml de leche de coco","1 cda curry","Aceite","Sal"],
-    "steps": ["Sofríe cebolla picada.","Añade pollo en dados y dora.","Agrega curry y leche de coco. Cocina 15 min."]
+    "tags": [
+      "arroz",
+      "salsa"
+    ],
+    "ingredients": [
+      "400 g de pechuga de pollo",
+      "1 cebolla",
+      "200 ml de leche de coco",
+      "1 cda curry",
+      "Aceite",
+      "Sal"
+    ],
+    "steps": [
+      "Sofríe cebolla picada.",
+      "Añade pollo en dados y dora.",
+      "Agrega curry y leche de coco. Cocina 15 min."
+    ]
   },
   {
     "id": "tarta-queso",
@@ -29,9 +56,23 @@
     "category": "Postres",
     "difficulty": "Media",
     "time": 60,
-    "tags": ["horno","dulce"],
-    "ingredients": ["200 g de galletas","100 g de mantequilla","500 g de queso crema","200 g de azúcar","3 huevos","200 ml de nata"],
-    "steps": ["Tritura galletas y mezcla con mantequilla. Presiona en el molde.","Bate queso, azúcar, huevos y nata.","Hornea a 180 °C durante 45 min."]
+    "tags": [
+      "horno",
+      "dulce"
+    ],
+    "ingredients": [
+      "200 g de galletas",
+      "100 g de mantequilla",
+      "500 g de queso crema",
+      "200 g de azúcar",
+      "3 huevos",
+      "200 ml de nata"
+    ],
+    "steps": [
+      "Tritura galletas y mezcla con mantequilla. Presiona en el molde.",
+      "Bate queso, azúcar, huevos y nata.",
+      "Hornea a 180 °C durante 45 min."
+    ]
   },
   {
     "id": "ensalada-quinoa",
@@ -40,9 +81,23 @@
     "category": "Vegetariano",
     "difficulty": "Fácil",
     "time": 15,
-    "tags": ["frío","saludable"],
-    "ingredients": ["150 g de quinoa cocida","1 tomate","1 pepino","1/2 cebolla morada","Aceite de oliva","Sal y limón"],
-    "steps": ["Enfría la quinoa.","Corta verduras en dados.","Mezcla y aliña con aceite, sal y limón."]
+    "tags": [
+      "frío",
+      "saludable"
+    ],
+    "ingredients": [
+      "150 g de quinoa cocida",
+      "1 tomate",
+      "1 pepino",
+      "1/2 cebolla morada",
+      "Aceite de oliva",
+      "Sal y limón"
+    ],
+    "steps": [
+      "Enfría la quinoa.",
+      "Corta verduras en dados.",
+      "Mezcla y aliña con aceite, sal y limón."
+    ]
   },
   {
     "id": "tostadas-aguacate",
@@ -51,8 +106,38 @@
     "category": "Desayunos",
     "difficulty": "Fácil",
     "time": 10,
-    "tags": ["rápido","vegano"],
-    "ingredients": ["2 rebanadas de pan","1 aguacate maduro","Sal","Pimienta","Zumo de limón"],
-    "steps": ["Tuesta el pan.","Machaca el aguacate con sal, pimienta y limón.","Unta y sirve."]
+    "tags": [
+      "rápido",
+      "vegano"
+    ],
+    "ingredients": [
+      "2 rebanadas de pan",
+      "1 aguacate maduro",
+      "Sal",
+      "Pimienta",
+      "Zumo de limón"
+    ],
+    "steps": [
+      "Tuesta el pan.",
+      "Machaca el aguacate con sal, pimienta y limón.",
+      "Unta y sirve."
+    ]
+  },
+  {
+    "id": "prueba-vercel",
+    "title": "Prueba Vercel",
+    "image": "",
+    "category": "Sin categoría",
+    "difficulty": "Fácil",
+    "time": 0,
+    "tags": [],
+    "ingredients": [
+      "agua",
+      "sal"
+    ],
+    "steps": [
+      "hervir",
+      "servir"
+    ]
   }
 ]
