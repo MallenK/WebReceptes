@@ -155,6 +155,18 @@ addForm.addEventListener('submit', async e => {
 });
 
 
+// Recarga el JSON remoto y re-renderiza
+async function refreshFromJson() {
+  const res = await fetch(`assets/data/recetas.json?cache=${Date.now()}`, { cache: 'no-store' });
+  if (!res.ok) throw new Error('No se pudo leer recetas.json');
+  const defaults = await res.json();
+  window.__defaults__ = defaults;   // cache en memoria
+  loadRecipes(defaults);
+  render();
+}
+
+
+
 // ===== Exportar / Importar / Resetear =====
 document.getElementById('exportBtn').onclick = () => {
   const user = localStorage.getItem(LS_KEYS.user) || '[]';
