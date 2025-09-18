@@ -289,5 +289,22 @@ button, .btn, .fav, select, input[type="checkbox"]{
 
 
 // ===== Init =====
+
+// ===== Toggle menú móvil =====
+const menuToggle = document.getElementById('menuToggle');
+const mainNav = document.getElementById('mainNav');
+
+menuToggle.addEventListener('click', () => {
+  const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+  menuToggle.setAttribute('aria-expanded', String(!isOpen));
+  if (isOpen) {
+    mainNav.hidden = true;
+  } else {
+    mainNav.hidden = false;
+  }
+});
+
+
+
 loadRecipes();
 render();
