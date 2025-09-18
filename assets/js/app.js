@@ -121,8 +121,6 @@ function toggleFav(id, node) {
 
 // ===== Formulario añadir =====
 const addForm = document.getElementById('addForm');
-// Arriba del archivo
-const API_URL = "https://<tu-proyecto>.vercel.app/api/add-recipe";
 
 // En el submit del formulario
 addForm.addEventListener('submit', async e => {
