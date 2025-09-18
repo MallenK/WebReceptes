@@ -129,7 +129,13 @@ function render() {
 
   grid.innerHTML = filtered.map(r => `
     <article class="card" aria-label="Receta ${r.title}">
-      <img class="thumb" src="${r.image || 'https://via.placeholder.com/400x250?text=Sin+imagen'}" alt="${r.title}">
+      <img class="thumb"
+     src="${r.image || 'https://via.placeholder.com/800x500?text=Receta'}"
+     alt="${r.title}"
+     loading="lazy"
+     decoding="async"
+     sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 33vw">
+
       <div class="card-body">
         <h3 class="title-sm">${r.title}</h3>
         <div class="row">
@@ -150,7 +156,9 @@ function render() {
 const modal = $('#recipeModal');
 function openModal(r) {
   $('#mTitle').textContent = r.title;
-  $('#mImg').src = r.image || 'https://via.placeholder.com/400x250?text=Sin+imagen';
+  $('#mImg').src = r.image || 'https://via.placeholder.com/1200x750?text=Receta';
+  $('#mImg').loading = 'lazy';
+  $('#mImg').decoding = 'async';
   $('#mImg').alt = r.title;
   $('#mCat').textContent = '🍽️ ' + r.category;
   $('#mDiff').textContent = '🧩 ' + r.difficulty;
@@ -228,6 +236,57 @@ document.getElementById('ghHint').onclick = e => {
   e.preventDefault();
   alert('Sube este archivo como index.html a un repo público y activa Settings → Pages → Deploy from branch.');
 };
+
+
+
+
+/* ——— Responsivo: tipografía y layout ——— */
+:root{ --space:16px }
+.container{ padding:clamp(16px, 3vw, 32px) }
+h1{ font-size:clamp(22px, 4.5vw, 32px) }
+
+/* Grid fluido y cartas adaptable */
+.grid{
+  grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+  gap:clamp(12px, 2.5vw, 18px);
+}
+@media (max-width:1024px){
+  .controls{ grid-template-columns:1fr 1fr }
+}
+@media (max-width:768px){
+  .controls{ grid-template-columns:1fr }
+  .actions{ gap:8px }
+  .btn{ width:100% }
+}
+
+/* Diálogo: a pantalla completa en móvil */
+@media (max-width:600px){
+  dialog{
+    width:100vw; height:100dvh; max-width:none; max-height:none;
+    border-radius:0;
+  }
+  .modal-body{ padding:16px }
+  .cols{ grid-template-columns:1fr; gap:12px }
+}
+
+/* Objetivos táctiles (mín. 44x44) */
+button, .btn, .fav, select, input[type="checkbox"]{
+  min-height:44px; min-width:44px;
+}
+@media (pointer:coarse){
+  .btn{ padding:12px 16px }
+}
+
+/* Imágenes fluidas */
+.thumb{ width:100%; height:auto; object-fit:cover }
+
+/* Accesibilidad movimiento reducido */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important }
+}
+
+
+
 
 // ===== Init =====
 loadRecipes();
