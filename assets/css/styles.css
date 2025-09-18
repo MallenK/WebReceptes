@@ -1,1 +1,117 @@
+:root {
+  --bg:#f8f6ff;
+  --card:#ffffff;
+  --muted:#6a6f85;
+  --text:#1f2430;
+  --brand:#7b4dd6;
+  --brand-2:#e9e1ff;
+  --ok:#2fbe7a;
+  --warn:#e6a53a;
+  --shadow:0 6px 20px rgba(20,16,50,.08);
+  --radius:16px;
+  --line:#e9e9f4;
+  --field:#ffffff;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:linear-gradient(180deg,#f4f1ff 0%, #faf9ff 60%, #f8f6ff 100%);
+  color:var(--text);
+  font:16px/1.5 Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+}
+a{color:var(--brand)}
+.container{max-width:1100px; margin-inline:auto; padding:24px}
+header{
+  display:grid; gap:18px; align-items:center; margin-bottom:20px;
+  grid-template-columns:1fr auto;
+}
+.title{display:flex; align-items:center; gap:14px}
+.logo{
+  width:44px; height:44px; border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,var(--brand-2),var(--brand));
+  box-shadow:0 0 0 3px rgba(123,77,214,.12)
+}
+h1{font-size:clamp(20px,4vw,32px); margin:0; letter-spacing:.3px}
+.sub{color:var(--muted); font-size:14px; margin-top:2px}
+
+.controls{display:grid; gap:10px; grid-template-columns:1fr 150px 150px 140px}
+.controls input[type="search"], .controls select{
+  width:100%; border:1px solid var(--line); background:var(--field); color:var(--text);
+  padding:12px 14px; border-radius:12px; outline:none;
+  transition:border .2s ease, box-shadow .2s ease;
+}
+.controls input[type="search"]:focus, .controls select:focus{
+  border-color:var(--brand); box-shadow:0 0 0 3px rgba(123,77,214,.15)
+}
+.controls .fav-toggle{display:flex; align-items:center; gap:8px; justify-content:center}
+
+.actions{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 6px}
+.btn{
+  padding:10px 14px; border-radius:12px; border:1px solid var(--line);
+  background:#fff; color:var(--text); cursor:pointer;
+  transition:transform .05s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.btn:hover{border-color:var(--brand); box-shadow:0 6px 14px rgba(20,16,50,.08)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{
+  background:linear-gradient(180deg,#7b4dd6,#6b3fcb);
+  border-color:transparent; color:#fff;
+  box-shadow:0 10px 24px rgba(107,63,203,.25)
+}
+
+.grid{display:grid; gap:16px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.card{
+  background:var(--card); border:1px solid var(--line);
+  border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);
+  display:flex; flex-direction:column;
+}
+.thumb{aspect-ratio:16/10; width:100%; background:#f0eefc; object-fit:cover}
+.card-body{padding:14px}
+.pill{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:12px; color:#4b3aa6; background:#f3efff; border:1px solid #e0d7ff;
+  padding:4px 8px; border-radius:999px
+}
+.row{display:flex; gap:8px; flex-wrap:wrap; margin:8px 0}
+.title-sm{font-weight:700; margin:0 0 4px; font-size:16px}
+.muted{color:var(--muted); font-size:13px}
+.tags{display:flex; flex-wrap:wrap; gap:6px}
+.tag{
+  font-size:11px; color:#545a76; border:1px solid var(--line); background:#f7f7fb;
+  padding:3px 8px; border-radius:999px
+}
+.card-footer{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 14px; border-top:1px solid var(--line); background:#fcfcff
+}
+.fav{cursor:pointer; font-size:20px; user-select:none}
+.fav.active{color:#e2557f}
+
+dialog{
+  border:none; border-radius:20px; background:#ffffff; color:var(--text);
+  width:min(720px,92vw); box-shadow:0 30px 80px rgba(20,16,50,.20)
+}
+dialog::backdrop{background:rgba(10,10,20,.35)}
+.modal-header{display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid var(--line); padding:12px 16px}
+.modal-body{padding:16px}
+.x{background:transparent;border:0;color:var(--muted); font-size:22px; cursor:pointer}
+.cols{display:grid; gap:18px; grid-template-columns:1.2fr .8fr}
+
+details.add{margin:18px 0}
+details.add summary{cursor:pointer; padding:10px 12px; border-radius:12px;
+  background:#ffffff; border:1px solid var(--line)}
+.form-grid{display:grid; gap:10px; grid-template-columns:1fr 1fr}
+.form-grid textarea{grid-column:1/-1}
+input,select,textarea{font:inherit}
+textarea{min-height:110px; resize:vertical}
+
+footer{margin:26px 0 8px; color:var(--muted); font-size:13px}
+
+@media (max-width:800px){
+  .controls{grid-template-columns:1fr 1fr}
+  .cols{grid-template-columns:1fr}
+}
 
